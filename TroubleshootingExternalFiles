@@ -1,0 +1,87 @@
+import os
+import sys
+
+path = 'grades.csv'
+
+checkFile = os.path.isfile(path)
+
+if checkFile == True:
+
+    infile = open(path, 'r')
+    #class list
+    classList = infile.readlines()
+    #close the file
+    infile.close()
+
+else:
+
+    print('File does not exist')
+    sys.exit()
+
+#count the number of grades
+#gradeLength = len(classList) - 2
+gradeLength = len(classList) - 1
+
+#verify there is anything to calculate a gpa with
+if gradeLength <= 0:
+    
+    print('There are no classes. GPA cannot be calculated.')
+    sys.exit()
+
+#create a grade table
+#changed 'c' to 'C'
+gpaList = ('A', 4, 'A-', 3.67, 'B+', 3.33, 'B', 3, 'B-', 2.67, 'C+', 2.33, 'C', 2, 'C-', 1.67, 'D+', 1.33, 'D', 1, 'F', 0)
+cumulativeCredits = 0
+cumulativeGPA = 0
+gradeCount = 1
+gpaCheck = 0
+processGrade = 0
+
+while processGrade < gradeLength:
+    
+    individualClass = classList[gradeCount].split(',')
+    #print class name and 'processed grade count'
+    print('Class', gradeCount, '...', individualClass[2])
+    #print credits and grade for respective class
+    print('Credits: ', individualClass[0])
+    #used .upper() because I want a capital grade to be displayed regardless of capitalization in csv file
+    print('Grade: ', individualClass[1].upper(), '\n')
+    
+    #verify that credits in csv file are positive integeres
+    try:
+        int(individualClass[0])
+    except:
+        print('An invalid credit was entered: ', individualClass[0])
+        sys.exit()
+        
+    if int(individualClass[0]) < 0:
+        
+        print('An invalid credit was entered: ', individualClass[0])
+        sys.exit()
+    
+    while True:
+
+        #using .upper() to make capitalization in csv file inconsequential
+        if individualClass[1].upper() == gpaList[gpaCheck]:
+
+            #add to weighted grade
+            cumulativeGPA = cumulativeGPA + gpaList[gpaCheck + 1] * int(individualClass[0])
+            cumulativeCredits = cumulativeCredits + int(individualClass[0])
+            break
+        
+        gpaCheck = gpaCheck + 2
+        
+        #if the csv letter grade is not found in gpaList
+        if gpaCheck >= len(gpaList):
+        
+            print('An invalid grade was entered: ', individualClass[1])
+            sys.exit()
+    
+    #reset gpaCheck for next course
+    gpaCheck = 0
+    gradeCount = gradeCount + 1
+    processGrade = processGrade + 1 
+    
+#calculate the GPA
+finalGPA = str(round(cumulativeGPA/cumulativeCredits, 2))
+print ('Your Final GPA is: ', finalGPA)
