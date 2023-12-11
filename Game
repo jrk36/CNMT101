@@ -751,4 +751,4 @@ while enterFleeLoop != True:
     else:
         print('*Please enter 1 or 2*\n')
 
-#GitHub: https://github.com/jrk36/Game
+#GitHub: https://github.com/jrk36/CNMT101
