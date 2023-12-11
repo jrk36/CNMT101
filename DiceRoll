@@ -38,4 +38,4 @@ for rolls in range(numberOfRollsInteger):
                         print('Critical Miss!')
 
 #sources: TutorialsTeacher, PYnumber, 
-#https://github.com/jrk36/DiceRoll/blob/main/DiceRoll
+#https://github.com/jrk36/CNMT101
